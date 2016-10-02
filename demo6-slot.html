@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue.js Slot</title>
+    <style>
+        .alert--close{
+            font-weight: bold;
+            cursor: pointer;
+            color: #ccc;
+            font-size:10px;
+        }
+        
+        .alert--success{
+            color: green;
+        }
+        .alert--warning{
+            color: orange;
+        }
+        .alert--error{
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+    <alert type="success">
+        <strong>Success!</strong> nice
+    </alert>
+    <alert type="warning">
+        <strong>Success!</strong> nice
+    </alert>
+    <alert type="error">
+        <strong>Success!</strong> nice
+    </alert>
+    <alert></alert>
+
+    <template id="alert-template">
+        <div :class="alertClasses" v-show="show">
+            <slot><strong>Default</strong> Hello world</slot>
+            <span class="alert--close" @click="show=false">关闭</span>
+        </div>
+    </template>
+
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('alert', {
+            template: '#alert-template',
+            props: ['type'],
+            computed: {
+                alertClasses: function () {
+                    return {
+                        'alert--success': this.type == 'success',
+                        'alert--warning': this.type == 'warning',
+                        'alert--error': this.type == 'error'
+                    }
+                }
+            },
+            data: function () {
+                return {
+                    show: true
+                }
+            }
+        });
+
+        new Vue({
+            el: 'body'
+        })
+    </script>
+    <!--
+        如何理解Vue.js的组件中的slot? http://www.zhihu.com/question/37548226 （分享自知乎网）
+    -->
+</body>
+</html>

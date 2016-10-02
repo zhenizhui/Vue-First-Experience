@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="vue.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    span {
+        color: #fff;
+        border: 1px soild #ccc;
+        cursor: pointer;
+        padding: 5px;
+    }
+    
+    #demo {
+        padding: 10px;
+    }
+    
+    .finishing,
+    .has-finish,
+    .not-finish {
+        background-color: #389dc1;
+        color: #FFFFFF;
+    }
+    
+    #demo.finishing,
+    #demo.has-finish,
+    #demo.not-finish {
+        background-color: #fff; 
+    }
+    
+    #demo.finishing .finishing,
+    #demo.has-finish .has-finish,
+    #demo.not-finish .not-finish {
+        background-color: #e35885;
+    }
+    
+    p {
+        margin-top: 10px;
+        color: #000;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="demo" @click.prevent :class="active">
+        <span class="has-finish" @click="select('has-finish', $event)">已完成</span>
+        <span class="not-finish" @click="select('not-finish', $event)">未完成</span>
+        <span class="finishing" @click="select('finishing', $event)">进行中</span>
+        <p>当前选择的是：{{hasSelect}}</p>
+    </div>
+    <script type="text/javascript">
+    new Vue({
+        el: '#demo',
+        data: {
+            hasSelect: '',
+            active: ''
+        },
+        methods: {
+            select: function(value,e) {
+                this.active = value;
+                this.hasSelect = e.target.innerHTML;
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue.js props</title>
+
+</head>
+
+<body>
+    <div id="prop-example-1">
+        <!-- 短横线分割法 -->
+        <child my-message="hello!"></child>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+    new Vue({
+        el: '#prop-example-1',
+        components: {
+            child: {
+                //驼峰法
+                props: ['myMessage'],
+                template: '<span>{{ myMessage }}</span>'
+            }
+        }
+    })
+    //名字形式为 驼峰法 的 prop 用作特性时，需要转为 kebab-case（短横线隔开）
+    </script>
+</body>
+
+</html>

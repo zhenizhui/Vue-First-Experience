@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>组件局部注册</title>
+    <script src="vue.js"></script>
+</head>
+
+<body>
+    <div id="user-action-div">
+        <!-- 使用自定义的组件-->
+        <user-action></user-action>
+    </div>
+    <!--下面这个组件不会生效，因为这个组件是局部注册的，在全局范围内不可见-->
+    <!--F12 查看dom元素会发现user-action没有被渲染-->
+    <user-action></user-action>
+    <script>
+    //1. 定义
+    var userAction = Vue.extend({
+        template: '<a href="#">登陆</a> <a href="#">注册</a>'
+    })
+
+    new Vue({
+        //3. 挂载在id=user-action-div的元素下
+        el: "#user-action-div",
+        components: {
+            //2. 局部注册，这样只有在id=user-action-div的元素内部才能正确渲染<user-action></user-action>
+            'user-action': userAction
+        }
+    })
+    </script>
+</body>
+
+</html>

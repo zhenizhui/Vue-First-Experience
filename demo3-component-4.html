@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>用语法糖来开发组件</title>
+</head>
+
+<body>
+    <!--使用vue组件注册语法糖来简化注册的流程-->
+    <div id="main-content">
+        <parent></parent>
+    </div>
+
+    <template id="son">
+        <select name="hobby" id="">
+            <option value="basketball">打篮球</option>
+            <option value="football">打足球</option>
+            <option value="baseball">打棒球</option>
+        </select>
+    </template>
+
+    <template id="parent">
+        <p>选择你喜爱的球类运动</p>
+        <son></son>
+    </template>
+    <script src="vue.js"></script>
+    <script>
+    new Vue({
+        el: '#main-content',
+        components: {
+            'parent':{
+                template:'#parent',
+                components:{
+                    'son': {
+                        template: '#son'
+                    }
+                }
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

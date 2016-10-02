@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>组件的编写和全局注册组件</title>
+    <script src="vue.js"></script>
+</head>
+
+<body>
+    <div id="user-action">
+        <!-- 使用自定义的组件-->
+        <user-action></user-action>
+    </div>
+    <!--下面这个组件不会生效，因为没有哪个Vue实例表明在body下面挂载user-action组件，要想在body里面使用user-action，就要new一个Vue实例，并且el的值要设置为body-->
+    <user-action></user-action>
+    <script>
+    //1. 定义
+    var userAction = Vue.extend({
+        template: '<a href="#">登陆</a> <a href="#">注册</a>'
+    })
+
+    //2. 在全局范围内注册组件
+    Vue.component('user-action', userAction);
+
+    new Vue({
+        //3. 挂载组件，把组件挂载在id=user-action的元素下
+        el: "#user-action"
+    })
+
+    /*
+    //new一个Vue实例，当body元素里面有<user-action></user-action>标签的时候，就可以应用之前定义好的组件了
+     new Vue({
+        el: 'body'
+    })
+    */
+    </script>
+</body>
+
+</html>
