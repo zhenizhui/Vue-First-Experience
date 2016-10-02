@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>父子组件作用域的问题</title>
+    <style>
+        .son{
+            color: #389dc1;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="app">
+    <p>I am App</p>
+    <son v-show="display"></son>
+    <!-- 到底是Vue的实例上的display属性控制这个son的显示还是子组件data上的display控制 -->
+    <!-- 其实是Vue实例控制的 -->
+    <!-- 父组件模板的内容在父组件作用域内编译；子组件模板的内容在子组件作用域内编译 -->
+    <!-- 通俗地讲，在子组件中定义的数据，只能用在子组件的模板。在父组件中定义的数据，只能用在父组件的模板。 -->
+    <!-- 这样看来，是否可以认为子组件变成了它爹的模板了，因此它爹就可以控制它了？ -->
+</div>
+<template id="son">
+    <p>
+        <span v-bind:class="{'son':isShow}">{{sonMsg}}</span> is here
+    </p>
+</template>
+<script src="vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            display: true//在Vue的实例添加display属性
+        },
+        components: {
+            'son': {
+                template: '#son',
+                data: function() {
+                    return {
+                        isShow:true,
+                        sonMsg: 'son',
+                        display: false//在子组件的data选项中添加display属性
+                    }
+                }
+            }
+        }
+    })
+</script>
+<!--
+    http://www.cnblogs.com/keepfool/p/5637834.html
+-->
+</body>
+
+</html>
