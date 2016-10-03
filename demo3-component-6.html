@@ -33,8 +33,10 @@
                 notify: function() {
                     if (this.msg.trim()) {
                         this.$dispatch('child-msg', this.msg);
-                            //this.$emit('child-msg', this.msg);
-                        this.msg = ''
+                        //this.$emit('child-msg', this.msg);
+                        this.msg = '';
+                        //子元素访问父元素的内容
+                        console.log("子组件：消息已经发出，父组件的内容是"+this.$parent.childMessage);
                     }
                 }
             }
@@ -48,8 +50,9 @@
         },
         methods: {
             handleIt: function(msg) {
-                console.log("收到的信息是" + msg);
+                console.log("父组件：收到的信息是" + msg);
                 this.childMessage.push(msg);
+                //父组件访问子组件, this.$children，包含它所有的子元素
             }
         }
     });
