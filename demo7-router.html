@@ -4,24 +4,162 @@
 <head>
     <meta charset="UTF-8">
     <title>vue-router demo</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+    [v-cloak] {
+        display: none;
+    }
+    
+    .v-link-active {
+        border-left-color: #1b809e;
+        border-left-width: 5px;
+    }
+    
+    template {
+        display: none;
+    }
+    </style>
 </head>
 
 <body>
-    <div class="list-group">
-        <a class="list-group-item" v-link="{ path: '/home'}">Home</a>
-        <a class="list-group-item" v-link="{ path: '/about'}">About</a>
-        <router-view></router-view>
+    <div id="app">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-offset-2 col-xs-8">
+                    <div class="page-header">
+                        <h2>VueRouter</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-offset-2 col-xs-8">
+                    <ol class="breadcrumb">
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#">个人信息</a></li>
+                        <li class="active">Data</li>
+                    </ol>
+                </div>
+                <div class="col-xs-2 col-xs-offset-2">
+                    <div class="list-group">
+                        <!--使用指令v-link进行导航-->
+                        <a class="list-group-item" v-link="{ path: '/demo'}">首页</a>
+                        <a class="list-group-item" v-link="{ path: '/user'}">个人信息</a>
+                        <a class="list-group-item" v-link="{ path: '/about'}">关于</a>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <!--用于渲染匹配的组件-->
+                    <router-view></router-view>
+                </div>
+            </div>
+        </div>
     </div>
+    <template id="user">
+        <ul class="nav nav-tabs nav-justified" v-on:click="setActive">
+            <li role="presentation" class="active"><a v-link="{ path: '/user/info'}">基本资料</a></li>
+            <li role="presentation"><a v-link="{ path: '/user/modifyAvast'}">修改头像</a></li>
+            <li role="presentation"><a v-link="{ path: '/user/modifyNickName'}">修改昵称</a></li>
+            <li role="presentation"><a v-link="{ path: '/user/realNameAuth'}">实名认证</a></li>
+            <li role="presentation"><a v-link="{ path: '/user/modifyPhone'}">修改手机</a></li>
+        </ul>
+        <div id="ddd">
+            <router-view></router-view>
+        </div>
+        
+    </template>
+    <template id="demo">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">首页</h3> </div>
+            <div class="panel-body"> Vue Router Demo </div>
+        </div>
+    </template>
+    <template id="modifyAvast">
+        <h4>{{ title }}</h4>  
+    </template>
+    <template id="info">
+         <h4>{{ title }}</h4>
+    </template>
+    <template id="modifyNickName">
+         <h4>{{ title }}</h4>
+    </template>
+    <template id="realNameAuth">
+         <h4>{{ title }}</h4>
+    </template>
+    <template id="modifyPhone">
+         <h4>{{ title }}</h4>
+    </template>
     <script src="vue.js"></script>
     <script src="vue-router.js"></script>
     <script>
-    var Home = Vue.extend({
-        template: '<div><h1>Home</h1><p>{{msg}}</p></div>',
+    var User = Vue.extend({
+        template: '#user',
         data: function() {
             return {
-                msg: 'Hello, vue router!'
+
+            }
+        },
+        methods: {
+            setActive: function(event) {
+                var ul = event.currentTarget;
+                var child = ul.children;
+                //先清空li的样式
+                for (var i = 0; i < child.length; i++) {
+                    child[i].className = "";
+                }
+                //设置当前的li的样式
+                event.target.parentElement.className = "active";
             }
         }
+    })
+
+    var ModifyAvast = Vue.extend({
+        template: '#modifyAvast',
+        data: function(){
+            return{
+                title: '修改头像'
+            }
+        }
+    })
+
+    var Info = Vue.extend({
+        template: '#info',
+        data: function() {
+            return {
+                title: '基本信息'
+            }
+        }
+    })
+
+    var ModifyNickName = Vue.extend({
+        template: '#modifyNickName',
+        data: function() {
+            return {
+                title: '修改昵称'
+            }
+        }
+    })
+
+    var RealNameAuth = Vue.extend({
+        template: '#realNameAuth',
+        data: function() {
+            return {
+                title: '实名认证'
+            }
+        }
+    })
+
+    var ModifyPhone = Vue.extend({
+        template: '#modifyPhone',
+        data: function() {
+            return {
+                title: '修改手机'
+            }
+        }
+    })
+
+    var Demo = Vue.extend({
+        template: '#demo'
     })
 
     var About = Vue.extend({
@@ -31,12 +169,37 @@
     var router = new VueRouter();
 
     router.map({
-        '/home': {
-            component: Home
+        '/demo': {
+            component: Demo
+        },
+        '/user': {
+            component: User,
+            subRoutes: {
+                '/info': {
+                    component: Info
+                },
+                '/modifyAvast': {
+                    component: ModifyAvast
+                },
+                '/modifyNickName': {
+                    component: ModifyNickName
+                },
+                '/realNameAuth': {
+                    component: RealNameAuth
+                },
+                '/modifyPhone': {
+                    component: ModifyPhone
+                }
+            }
         },
         '/about': {
             component: About
         }
+    })
+
+    router.redirect({
+        '/': '/demo',
+        '/user':'/user/info'
     })
 
     var App = Vue.extend({});
